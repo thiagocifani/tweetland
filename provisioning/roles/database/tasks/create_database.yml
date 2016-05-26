@@ -1,0 +1,23 @@
+- name: Check if the default database exists
+  command: sudo -u postgres -- psql -c '\l'
+  register: existing_databases
+  
+- name: Create devel database
+  shell: sudo -u postgres -- psql -c "CREATE DATABASE {{app_name}}_devel"
+  when: existing_databases.stdout.find("{{app_name}}_devel") == -1
+
+- name: Create test database
+  shell: sudo -u postgres -- psql -c "CREATE DATABASE {{app_name}}_test"
+  when: existing_databases.stdout.find("{{app_name}}_test") == -1  
+
+- name: Define PostgreSQL user
+  shell: sudo -u postgres -- psql -c "CREATE USER {{app_name}} WITH PASSWORD '{{pg_password}}'"
+  when: existing_databases.stdout.find("{{app_name}}") == -1
+
+- name: Define PostgreSQL user permissions - devel
+  shell: sudo -u postgres -- psql -c "GRANT ALL PRIVILEGES ON DATABASE {{app_name}}_devel TO {{app_name}}"
+  when: existing_databases.stdout.find("{{app_name}}") == -1
+
+- name: Define PostgreSQL user permissions - test
+  shell: sudo -u postgres -- psql -c "GRANT ALL PRIVILEGES ON DATABASE {{app_name}}_test TO {{app_name}}"
+  when: existing_databases.stdout.find("{{app_name}}") == -1  

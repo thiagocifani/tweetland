@@ -1,0 +1,7 @@
+webserver_name: tweetland
+deploy_directory: /webapps/tweetland
+shared_directory: "{{deploy_directory}}/shared"
+app_name: tweetland
+log_path: "{{shared_directory}}/log"
+log_file: "{{log_path}}/tweetland.log"
+pg_password: "tweetpwd"

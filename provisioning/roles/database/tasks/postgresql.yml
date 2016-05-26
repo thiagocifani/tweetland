@@ -1,0 +1,23 @@
+- name: Install python-pycurl
+  apt: pkg=python-pycurl state=latest
+  
+- name: Add PostgreSQL repo key
+  apt_key: url=http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc
+  
+- name: Add PostgreSQL repo
+  apt_repository: repo="deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main"
+
+- name: Fix pg locale
+  template: src=etc_default_locale.j2 dest=/etc/default/locale
+
+- name: Install PostgreSQL
+  apt: pkg=postgresql-9.4 state=latest update_cache=yes
+
+- name: Copy valid pg_hba.conf
+  template: src=pg_hba.conf.j2 dest=/etc/postgresql/9.4/main/pg_hba.conf
+  
+- name: Copy valid postgresql.conf
+  template: src=postgresql.conf.j2 dest=/etc/postgresql/9.4/main/postgresql.conf
+
+- name: Restart PostgreSQL
+  command: service postgresql restart
