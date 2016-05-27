@@ -3,21 +3,11 @@ module Tweetland
   module TweetSerializer
     IDENTITY = ->(v) { v }
 
-    FROM_API = {
-      "topic" => [:topick, IDENTITY],
-    }
-
     TO_API = {
       topic: ["topic", IDENTITY]
     }
 
     BUILD_TWEET = ->(values) { Tweet.new(values) }
-
-    def self.deserialize(tweet, &build)
-      return if tweet.nil?
-
-      (build || BUILD_TWEET).call(map(FROM_API, tweet, &:to_sym))
-    end
 
     def self.serialize(tweet)
       return if tweet.nil?

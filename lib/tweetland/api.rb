@@ -17,15 +17,6 @@ module Tweetland
       end
     end
 
-    def json_tweet(key)
-      payload = JSON.parse(req.body.read)
-      value = TweetSerializer.deserialize(payload[key])
-
-      -> { captures << value unless value.to_s.empty? }
-    ensure
-      req.body.rewind
-    end
-
     def write_json(value)
       res.headers["Content-Type"] = "application/json; charset=utf-8"
       res.status = REQ_OK
@@ -46,7 +37,7 @@ module Tweetland
       end
 
       on_with_auth "all" do
-        write_json(Tweet.all, &ARRAY_OF_TWEET_JSON)
+        write_json(Tweet.latest, &ARRAY_OF_TWEET_JSON)
       end
     end
   end

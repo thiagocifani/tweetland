@@ -3,12 +3,11 @@
 module Tweetland
   class Tweet < Sequel::Model
     def self.latest_by(topic)
-      Tweet
-        .where(topic: topic).last(10)
+      Tweet.where(topic: topic).last(10)
     end
 
-    def self.all
-      Tweet.last(10)
+    def self.latest
+      Tweet.first(10)
     end
   end
 end
