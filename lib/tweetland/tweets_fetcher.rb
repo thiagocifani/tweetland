@@ -28,14 +28,14 @@ module Tweetland
 
     def attributes(content)
       {}.tap do |hash|
-        hash[:created_at]      = content.created_at
+        hash[:created_at]     = content.created_at
         hash[:favorite_count] = content.favorite_count
-        hash[:handle]          = content.user.screen_name
-        hash[:user_photo_url]  = content.user.profile_image_url.to_s
-        hash[:retweet_count]   = content.retweet_count
-        hash[:topic]           = topic
-        hash[:tweet_content]   = content.text
-        hash[:tweet_id]        = content.id
+        hash[:handle]         = content.user.screen_name
+        hash[:user_photo_url] = content.user.profile_image_url.to_s
+        hash[:retweet_count]  = content.retweet_count
+        hash[:topic]          = topic
+        hash[:tweet_content]  = content.text
+        hash[:tweet_id]       = content.id
       end
     end
   end

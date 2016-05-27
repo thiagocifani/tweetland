@@ -1,4 +1,5 @@
 require "sequel"
+require_relative "lib/tweetland"
 require "dotenv"
 Dotenv.load
 
@@ -34,5 +35,14 @@ namespace :db do
     Sequel::Migrator.run(DB, "db/migrate", :target => 0)
     Sequel::Migrator.run(DB, "db/migrate")
     Rake::Task['db:version'].execute
+  end
+end
+
+namespace :tweets do
+  desc "fetch tweets"
+  task :all  do
+    Tweetland::TweetsFetcher.new('nasa').save
+    Tweetland::TweetsFetcher.new('healthcare').save
+    Tweetland::TweetsFetcher.new('opensource').save
   end
 end
